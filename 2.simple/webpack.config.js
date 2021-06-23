@@ -1,4 +1,5 @@
-'use st'
+'use strict'
+
 const path = require('path');
 
 module.exports = {
