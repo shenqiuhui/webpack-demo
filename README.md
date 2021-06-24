@@ -87,3 +87,8 @@ module.exports = {
 - `css-loader`: 用于加载 `.css` 文件，并且转换成 `commmonjs` 对象
 - `style-loader`: 将样式通过 `<style>` 标签插入到 `<head>` 中
 - `less-loader`: 将 `.less` 解析成 `CSS`
+
+# 解析字体和图片
+
+- `file-loader`: 处理图片和字体
+- `url-loader`: 功能与 `file-loader` 相似，支持设置构建阈值进行转换图片文件或者 `base64`
