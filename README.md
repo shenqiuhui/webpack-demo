@@ -81,3 +81,9 @@ module.exports = {
   - 不开启任何优化项
 
 `Webpack 4` 之后，设置 `mode` 可以使用不同模式下内置的函数，默认值 `production`。
+
+# 解析 CSS
+
+- `css-loader`: 用于加载 `.css` 文件，并且转换成 `commmonjs` 对象
+- `style-loader`: 将样式通过 `<style>` 标签插入到 `<head>` 中
+- `less-loader`: 将 `.less` 解析成 `CSS`
