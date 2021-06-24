@@ -138,3 +138,21 @@ module.exports = {
 **更新阶段：**
 
 `Text Editer` => `File System` => `Webpack Compiler` => `HMR Server` => `HMR Runtime`
+
+# 文件指纹
+
+- `hash`: 和整个项目的构建有关，只要项目文件有修改，整个项目的 `hash` 都会修改
+- `chunkhash`: 和 `Webpack` 打包的 `chunk` 有关，不同的 `entry` 会生成不同的 `chunkhash`
+- `contenthash`: 根据文件内容来定义 `hash`，文件内容不变，则 `contenthash` 不变
+
+**占位符：**
+
+| 占位符名称 | 含义 |
+| ------------ | ------------ |
+| [ext] | 资源后缀名 |
+| [name] | 文件名称 |
+| [path] | 文件的相对路径 |
+| [folder] | 文件所在的文件夹 |
+| [contenthash] | 文件的内容 `hash`，默认由 `md5` 生成 |
+| [hash] | 图片和字体文件的 `hash`，与 `js` 和 `css` 的 `hash` 有所区别，默认由 `md5` 生成 |
+| [emoji] | 一个随机指代文件内容的 `emoji` |
