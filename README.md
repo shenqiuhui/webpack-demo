@@ -156,3 +156,17 @@ module.exports = {
 | [contenthash] | 文件的内容 `hash`，默认由 `md5` 生成 |
 | [hash] | 图片和字体文件的 `hash`，与 `js` 和 `css` 的 `hash` 有所区别，默认由 `md5` 生成 |
 | [emoji] | 一个随机指代文件内容的 `emoji` |
+
+# 代码压缩
+
+## JS 压缩
+
+`Webpack 4` 之后内置了 `uglifyjs-webpack-plugin` 插件，`mode=production` 的时候默认执行压缩。
+
+## CSS 压缩
+
+使用 `css-minimizer-webpack-plugin` 进行压缩。
+
+## HTML 压缩
+
+使用 `html-webpack-plugin` 提供的压缩参数 `minify` 配置
