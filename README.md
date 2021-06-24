@@ -120,5 +120,21 @@ module.exports = {
     // 判断文件是否发生变化是通过不停的询问指定的文件实现的，默认每秒询问 1000 次
     poll: 1000
   }
-}
+};
 ```
+
+# 热更新原理
+
+- `Webpack Compiler`: 将 `JS` 编译成 `Bundle`
+- `HMR Server`: 将热更新的文件输出给 `HMR Runtime`
+- `Bundle Server`: 提供文件在浏览器访问
+- `HMR Runtime`: 会注入到浏览器，更新文件变化
+- `bundle.js`: 构建输出文件
+
+**启动阶段：**
+
+`Text Editer` => `File System` => `Webpack Compiler` => `Bundle Server` => `bundle.js`
+
+**更新阶段：**
+
+`Text Editer` => `File System` => `Webpack Compiler` => `HMR Server` => `HMR Runtime`
