@@ -92,3 +92,33 @@ module.exports = {
 
 - `file-loader`: 处理图片和字体
 - `url-loader`: 功能与 `file-loader` 相似，支持设置构建阈值进行转换图片文件或者 `base64`
+
+# 文件监听
+
+## 方式
+
+文件监听是发现源码发生变化时，自动重新构建出新的输出文件。
+
+`Webpack` 开启监听的两种模式：
+
+- 启动 `webpack` 命令时带上 `--watch` 参数，缺点是每次都需要手动刷新浏览器
+- 在 `webpack.config.js` 中设置 `watch: true`
+
+## 原理
+
+轮询判断文件的最后编辑时间是否变化，某个文件变化并不会立即告诉监听者，而是先缓存起来，等待 `aggregateTimeout`
+
+```js
+module.exports = {
+  // 是否开启监听，默认为 false
+  watch: true,
+  watchOptions: {
+    // 默认为空，不监听文件或文件夹，支持正则匹配
+    ignore: /node_modules/,
+    // 监听到变化后会等 300ms 再去执行，默认值 300ms
+    aggregateTimeout: 300,
+    // 判断文件是否发生变化是通过不停的询问指定的文件实现的，默认每秒询问 1000 次
+    poll: 1000
+  }
+}
+```
