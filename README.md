@@ -178,3 +178,15 @@ module.exports = {
 - `rm -rf ./dist && webpack`，手动删除
 - `rimraf ./dist && webpack`，手动删除
 - `clean-webpack-plugin`，自动删除
+
+# 私有前缀
+
+**常见浏览器内核及私有前缀：**
+
+- `IE`: `Trident`（`-ms`）
+- `Firefox`: `Geko`（`-moz`）
+- `Chrome`: `Webkit`（`webkit`）
+- `Opera`: `Presto`（`-o`）
+
+使用 `autoprefixer` 插件，配合 `postcss-loader`、 [Can I use](https://caniuse.com) 规则。
+
