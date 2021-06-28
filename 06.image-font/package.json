@@ -1,8 +1,8 @@
 {
-  "name": "5.css-less-sass",
+  "name": "06.image-font",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "webpack.config.js",
   "scripts": {
     "build": "webpack"
   },
@@ -15,9 +15,11 @@
     "@babel/preset-react": "^7.14.5",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.2.6",
+    "file-loader": "^6.2.0",
     "less": "^4.1.1",
     "less-loader": "^10.0.0",
     "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
     "webpack": "^5.40.0",
     "webpack-cli": "^4.7.2"
   },

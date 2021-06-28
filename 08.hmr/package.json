@@ -1,12 +1,12 @@
 {
-  "name": "9.hash",
+  "name": "08.hmr",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.conf.js",
+    "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "webpack serve --config webpack.dev.conf.js --open"
+    "dev": "webpack serve --open"
   },
   "keywords": [],
   "author": "shenqiuhui",
@@ -20,7 +20,6 @@
     "file-loader": "^6.2.0",
     "less": "^4.1.1",
     "less-loader": "^10.0.0",
-    "mini-css-extract-plugin": "^1.6.0",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.40.0",
