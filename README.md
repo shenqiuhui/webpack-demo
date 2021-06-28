@@ -190,3 +190,14 @@ module.exports = {
 
 使用 `autoprefixer` 插件，配合 `postcss-loader`、 [Can I use](https://caniuse.com) 规则。
 
+# rem 自动转换
+
+定义：`font-size of root element`
+
+`rem` 和 `px` 的对比：
+
+- `rem`: 相对单位
+- `px`: 绝对单位
+
+使用 `px2rem-loader` 或 [lib-flexible](https://github.com/amfe/lib-flexible)
+
