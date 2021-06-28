@@ -170,3 +170,11 @@ module.exports = {
 ## HTML 压缩
 
 使用 `html-webpack-plugin` 提供的压缩参数 `minify` 配置
+
+# 构建前自动清理产出目录
+
+每次构建时候不会自动清理构建目录，造成构建的输出目录文件越来越多。
+
+- `rm -rf ./dist && webpack`，手动删除
+- `rimraf ./dist && webpack`，手动删除
+- `clean-webpack-plugin`，自动删除
