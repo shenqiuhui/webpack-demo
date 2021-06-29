@@ -50,7 +50,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash:8].js'
   },
-  mode: 'production',
+  mode: 'none',
   module: {
     rules: [
       {
@@ -117,5 +117,6 @@ module.exports = {
     new CssMinimizerPlugin(),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins
-  ]
+  ],
+  devtool: 'inline-source-map' // eval source-map inline-source-map
 };
