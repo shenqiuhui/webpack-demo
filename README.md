@@ -201,3 +201,19 @@ module.exports = {
 
 使用 `px2rem-loader` 或 [lib-flexible](https://github.com/amfe/lib-flexible)
 
+# 资源内联到 HTML
+
+**资源内联的意义：**
+
+- 页面框架的初始化脚本
+- 上报埋点相关
+- 首屏 `CSS` 内联避免页面闪动
+- 小图片或字体内联减少 `HTTP` 请求
+
+**内联方法：**
+
+- `HTML` 和 `JS` 内联：`raw-loader`
+- `CSS` 内联：
+  - `style-loader`: `options.singleton=true`，将所有 `style` 标签合并成一个
+  - `html-inline-css-webpack-plugin`:
+
