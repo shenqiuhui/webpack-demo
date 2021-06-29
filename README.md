@@ -217,3 +217,18 @@ module.exports = {
   - `style-loader`: `options.singleton=true`，将所有 `style` 标签合并成一个
   - `html-inline-css-webpack-plugin`:
 
+# 多页面应用 MPA
+
+每一次跳转的时候，服务端都会返回一个新的 `.html` 文件，这种类型的网站就叫做 `MPA`（多页面应用）。
+
+**优势：**
+
+- 每个页面之间是解耦的
+- 对 `SEO` 更加友好
+
+**多页面打包思路：**
+
+每个页面对应一个 `entry` 和一个 `html-webpack-plugin` 的实例，缺点是每次增加和删除页面都需要更改 `Webpack` 配置，使用 `glob` 库在每次构建时动态读取约定好的页面目录动态生成 `entry` 和 `html-webpack-plugin` 的实例。
+
+
+
