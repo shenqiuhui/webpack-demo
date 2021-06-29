@@ -2,8 +2,7 @@
 
 const path = require('path');
 const glob = require('glob');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -48,9 +47,9 @@ module.exports = {
   entry,
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash:8].js'
+    filename: '[name].js'
   },
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -60,62 +59,37 @@ module.exports = {
       {
         test: /.css$/,
         // 链式调用和执行顺序从右到左
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  require('autoprefixer')
-                ]
-              }
-            }
-          },
-          {
-            loader: 'px2rem-loader',
-            options: {
-              remUnit: 75, // 一个 rem 代表 75px，适合 750 的视觉稿
-              remPrecesion: 8 // 转换成 rem 后面小数点位数
-            }
-          }
-        ]
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /.less$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'less-loader'
-        ]
+        use: ['style-loader', 'css-loader', 'less-loader']
       },
       {
         test: /.(png|jpg|gif|jpeg)$/,
+        // use: 'file-loader'
         use: [{
-          loader: 'file-loader',
+          loader: 'url-loader',
           options: {
-            name: '[name].[hash:8].[ext]'
+            limit: 10240
           }
         }]
       },
       {
         test: /.(woff|woff2|eot|ttf|otf|ttc)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[hash:8].[ext]'
-          }
-        }]
+        use: 'file-loader'
       }
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css'
-    }),
-    new CssMinimizerPlugin(),
+    // 将 HMR Runtime 注入到 bundle.js
+    new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins
-  ]
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true
+  },
+  devtool: 'cheap-source-map'
 };
