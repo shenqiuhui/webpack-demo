@@ -256,3 +256,45 @@ module.exports = {
 | source-map | -- | -- | yes | 源代码 |
 | inline-source-map | -- | -- | no | 源代码 |
 | hidden-source-map | -- | -- | yes | 源代码 |
+
+# 基础库分离
+
+**思路：**
+
+- 比如 `React` 项目，将 `react`、`react-dom` 基础包通过 `cdn` 引入，不打入 `bundle` 中，使用 `html-webpack-externals-plugin`
+- 也可以利用 `Webpack 4` 内置的 `SplitChunksPlugin`，通过配置 `splitchunks` 实现
+
+**`chunks` 参数说明：**
+
+- `async`: 异步引入的库进行分离（默认）
+- `initial`: 同步引入
+- `all`: 所有引入的库进行分离（推荐）
+
+```js
+// https://webpack.docschina.org/plugins/split-chunks-plugin/
+module.exports = {
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minSize: 20000,
+      minRemainingSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        }
+      }
+    }
+  }
+};
+```
