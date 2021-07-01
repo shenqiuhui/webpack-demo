@@ -298,3 +298,57 @@ module.exports = {
   }
 };
 ```
+
+# Tree shaking
+
+## 概念
+
+借鉴了 `Rollup`，在 `Webpack 2` 版本支持。
+
+概念：一个模块可能有多个方法，只要其中某个方法被使用到了，则整个文件都会被打包到 `bundle` 中，`Tree shaking` 就是把没有使用的方法在打包过程中擦除掉，只把使用的方法打包到 `bundle` 中。
+
+使用：`Webpack 4` 默认支持，在 `.babelrc` 中设置 `modules: false` 即可，在 `production mode` 的情况下默认开启。
+
+要求：必须是 `ESModule` 语法，`CommonJS` 语法不支持。
+
+**`Tree Shaking` 的条件 `DCE`(`Dead Code Elimination`)**
+
+- 代码不会被执行，不可触达
+- 代码执行的结果不会被使用到
+- 死变量，只写不读
+- 未使用函数必须为纯函数，不能存在副作用
+
+```js
+if (false) {
+  console.log('不可触达');
+}
+```
+
+```js
+function fn() {
+  console.log('未被使用到');
+}
+
+function fun() {
+  console.log('被使用到');
+}
+
+fun();
+```
+
+```js
+const a = 1; // 死变量
+const b = 2;
+
+console.log(b);
+```
+
+## 原理
+
+**利用 `ESModule` 的静态特性：**
+
+- 只能作为模块顶层的语句出现
+- `import` 的模块名只能是常量
+- `import binding` 是 `immutable` 的
+
+代码擦除：在 `ESModule` 阶段进行静态分析，将要擦除的代码进行注释标记，`Uglify` 阶段擦除无用代码。

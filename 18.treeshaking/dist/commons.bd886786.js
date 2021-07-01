@@ -1,0 +1,1 @@
+(self.webpackChunk_18_treeshaking=self.webpackChunk_18_treeshaking||[]).push([[351],{927:function(e,n,t){"use strict";function u(){return"Hello webpack"}t.d(n,{T:function(){return u}})}}]);
