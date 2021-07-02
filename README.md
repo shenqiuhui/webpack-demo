@@ -376,3 +376,29 @@ console.log(b);
 原理：将所有模块的代码按照引用顺序放在一个函数作用域里（被依赖模块在前），然后适当的重命名一些变量防止变量名冲突，通过 `Scope Hoisting` 可以大大减少函数声明的代码和内存开销。
 
 当被多个模块引用，`Scope Hoisting` 将不会提升作用域。
+
+# 代码分割
+
+对于大部分 `Web` 应用来讲，将所有的代码都放在一个文件中显然是不够有效的，特别是当某些代码是在某些特殊时候才会被使用到，`Webpack` 有一个功能就是将你的代码分割成 `chunks`，当代码运行到他们的时候再进行加载。
+
+## 适用场景
+
+- 抽离相同代码到一个共享块
+- 按需加载，使得初始下载的代码更小
+
+**按需加载脚本的方式：**
+
+- `CommonJS`: `require.ensure`
+- `ESModule`: 动态 `import`，目前原生还没有被所有浏览器厂商所支持，需要 `babel` 转换
+
+## 动态 import 支持
+
+> npm install @babel/plugin-syntax-dynamic-import -D
+
+```json
+{
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import"
+  ]
+}
+```
