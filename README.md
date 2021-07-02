@@ -307,7 +307,7 @@ module.exports = {
 
 概念：一个模块可能有多个方法，只要其中某个方法被使用到了，则整个文件都会被打包到 `bundle` 中，`Tree shaking` 就是把没有使用的方法在打包过程中擦除掉，只把使用的方法打包到 `bundle` 中。
 
-使用：`Webpack 4` 默认支持，在 `.babelrc` 中设置 `modules: false` 即可，在 `production mode` 的情况下默认开启。
+使用：`Webpack 4+` 默认支持，在 `.babelrc` 中设置 `modules: false` 即可，在 `production mode` 的情况下默认开启。
 
 要求：必须是 `ESModule` 语法，`CommonJS` 语法不支持。
 
@@ -352,3 +352,27 @@ console.log(b);
 - `import binding` 是 `immutable` 的
 
 代码擦除：在 `ESModule` 阶段进行静态分析，将要擦除的代码进行注释标记，`Uglify` 阶段擦除无用代码。
+
+# Scope Hoisting
+
+借鉴了 `Rollup`，在 `Webpack 3` 版本支持，在 `Webpack 4+` 默认支持，在 `production mode` 的情况下默认开启。
+
+要求：必须是 `ESModule` 语法，`CommonJS` 语法不支持。
+
+## `Webpack` 在处理 `ESModule` 代码逻辑
+
+- 最外层会包裹一层 `IIFE`，即匿名闭包（浏览器端的 `CommonJS`）
+- `import` 会转换成 `_webpack_require`，用来加载模块，返回 `module.exports`
+- `__webpack_modules__` 是一个数组用来管理 `IIFE` 的模块
+- `__webpack_require__(0)` 来启动程序
+
+## 未开启 `Scope Hoisting` 会导致的问题
+
+- 大量模块函数闭包包裹的代码，导致体积增大（模块越多越明显）
+- 代码运行时创建的函数作用域变多，内存开销变大
+
+## Scope Hoisting 原理
+
+原理：将所有模块的代码按照引用顺序放在一个函数作用域里（被依赖模块在前），然后适当的重命名一些变量防止变量名冲突，通过 `Scope Hoisting` 可以大大减少函数声明的代码和内存开销。
+
+当被多个模块引用，`Scope Hoisting` 将不会提升作用域。
