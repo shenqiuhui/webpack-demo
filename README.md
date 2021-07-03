@@ -402,3 +402,49 @@ console.log(b);
   ]
 }
 ```
+
+# ESLint 使用
+
+优秀的 `ESLint` 规范实践：
+
+- `eslint-config-airbnb`
+- `eslint-config-airbnb-base`
+
+开发 `ESLint` 规范结合原则：
+
+- 不重复造轮子，`eslint:recommend` 配置并改进
+- 能够发现代码错误的规则全部开启
+- 帮助团队保持统一的代码风格，而不是限制开发体验。
+
+落地方案：
+
+- 和 `CI/CD` 集成，将代码检查放在发布流的 `pipeline` 中
+- 和 `Webpack` 等构建工具集成（会针对所有的文件进行检查，适用于新项目）
+- 本地增加 `precommit` 钩子，结合 `husky` 配置文件检查（增量检查，适用于旧项目）
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ['babel-loader', 'eslint-loader']
+      }
+    ]
+  }
+}
+```
+
+```json
+{
+  "scripts": {
+    "precommit": "lint-staged",
+  },
+  "lint-staged": {
+    "linters": {
+      "*.{js,css}": ["eslint --fix", "git add"]
+    }
+  }
+}
+```
