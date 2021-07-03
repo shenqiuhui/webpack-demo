@@ -1,0 +1,19 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "allowImportExportEverywhere": true,
+    "requireConfigFile": false
+  },
+  "extends": ["airbnb"],
+  "overrides": [
+    {
+      "files": ["src/*"],
+      "excludedFiles": ["webpack.dev.conf.js", "webpack.prod.conf.js"]
+    }
+  ],
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "rules": {}
+}
