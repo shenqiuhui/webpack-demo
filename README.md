@@ -448,3 +448,21 @@ module.exports = {
   }
 }
 ```
+
+# 打包自主开发的基础库
+
+**`Webpack` 除了可以打包应用，也可以打包 `js` 库：**
+
+- 需要打包压缩和非压缩版本
+- 支持 `AMD/CommonJS/ESModule` 模块引入
+- 支持 `script` 标签引入
+
+> `RollUp` 打包基础库更加适合，因为相对于 `Webpack` 打包更加纯粹，配置更加简单
+
+**如何将库暴露出去：**
+
+- `library`: 指定库的全局变量
+- `libraryExport`: 默认设置为 `default`，方便库的访问和使用
+- `libraryTarget`: 支持库引入的方式
+
+> 压缩版本使用 `TerserPlugin` 可以兼容压缩 `ESNext` 语法，基于 `UglifyJS 3.0` 版本开发，旧版 `UglifyJS` 遇到 `ESNext` 语法则会报错
