@@ -540,3 +540,18 @@ module.exports = {
 | `verbose` | none | 全部输出 |
 
 同时可以使用 `friendly-errors-webpack-plugin` 配合 `stats` 设置优化日志
+
+# 构建异常和终端处理
+
+在 `CI/CD` 的 `Pipeline` 或者发布系统需要知道当前构建状态，可以通过命令 `echo $?` 查看，返回 0 代表构建成功，否则失败
+
+在 `Webpack 4` 之前的版本构建错误不会抛出错误码，在之前的版本可以通过插件监听 `hooks` 的 `done` 事件自行添加错误状态和信息
+
+`NodeJS` 中 `process.exit` 规范：
+
+- 0 表示成功完成，回调函数中 `err` 为 `null`
+- 非 0 表示执行失败，回调函数中 `err` 为对象，`err.code` 就是错误码
+
+
+
+
