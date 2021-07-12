@@ -552,6 +552,36 @@ module.exports = {
 - 0 表示成功完成，回调函数中 `err` 为 `null`
 - 非 0 表示执行失败，回调函数中 `err` 为对象，`err.code` 就是错误码
 
+# 构建配置抽离
+## 构建配置抽离成 npm 包的意义
 
+- 通用性
+  - 业务开发者无需关注构建配置
+  - 统一团队构建脚本
+- 可维护性
+  - 构建配置合理拆分
+  - `README` 文档、`ChangeLog` 文档等
+- 质量
+  - 冒烟测试、单元测试、测试覆盖率
+  - 持续集成
 
+## 构建配置管理的可选方案
 
+- 通过多个配置文件管理不同环境的构建，`webpack --config` 参数进行控制
+- 构建配置设置成一个库，比如 `hjs-webpack`、`Neutrino`、`webpack-blocks`
+- 抽成一个工具进行管理，比如 `create-react-app`、`kyt`、`nwb`
+- 将所有配置放置在一个文件，通过 `--env` 参数控制分支选择
+
+## 构建包设计
+
+**通过多个配置文件管理不同环境的 `webpack` 配置：**
+
+- 基础配置：`webpack.base.js`
+- 开发环境：`webpack.dev.conf.js`
+- 生产环境：`webpack.prod.conf.js`
+- `SSR` 环境：`webpack.ssr.conf.js`
+
+**抽离称一个 `npm` 包统一管理：**
+
+- 规范：`Git Commit` 日志、`README`、`ESLint` 规范、`Semver` 规范
+- 质量：冒烟测试、单元测试、测试覆盖率和 `CI`
