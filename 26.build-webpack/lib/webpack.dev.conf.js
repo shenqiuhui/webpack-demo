@@ -1,0 +1,18 @@
+const { merge } = require('webpack-merge');
+const webpack = require('webpack');
+const baseConfig = require('./webpack.base.conf');
+
+const devConfig = {
+  mode: 'development',
+  devtool: 'cheap-source-map',
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+    stats: 'errors-only',
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+};
+
+module.exorts = merge(baseConfig, devConfig);
