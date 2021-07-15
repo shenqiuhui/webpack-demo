@@ -595,3 +595,16 @@ module.exports = {
   - 是否有 `js`、`css` 等静态文件输出
   - 是否有 `html` 文件输出
 
+## 单元测试
+
+**单元测试框架：**
+
+- `Mocha`、`AVA`，单纯的测试框架，需要断言库（`chai`、`should.js`、`expect`、`better-assert`）
+- `Jasmine`、`Jest`（`React` 项目使用较多）集成框架，开箱即用
+
+**单元测试接入：**
+
+- 安装 `mocha`、`chai`
+- 新建 `test` 目录，增加 `xxx.test.js` 测试文件
+- 在 `package.json` 中的 `scripts` 增加测试的执行命令
+- 执行测试命令

@@ -17,7 +17,6 @@ class Search extends React.Component {
       Text: null
     }
   }
-  a()
   hello() {
     helloworld();
     funcA();

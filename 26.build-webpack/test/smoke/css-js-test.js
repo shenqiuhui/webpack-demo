@@ -1,4 +1,4 @@
-const glob = require('glob');
+const glob = require('glob-all');
 
 describe('Checking generated css&js files', () => {
   it('Should generated css&js files', (done) => {

@@ -45,7 +45,7 @@ const setMpa = () => {
 
 const { entry, htmlWebpackPlugins } = setMpa();
 
-module.export = {
+module.exports = {
   entry,
   output: {
     path: path.join(projectRoot, 'dist'),

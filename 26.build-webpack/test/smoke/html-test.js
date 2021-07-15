@@ -1,4 +1,4 @@
-const glob = require('glob');
+const glob = require('glob-all');
 
 describe('Checking generated html files', () => {
   it('Should generated html files', (done) => {
