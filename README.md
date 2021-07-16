@@ -608,3 +608,135 @@ module.exports = {
 - 新建 `test` 目录，增加 `xxx.test.js` 测试文件
 - 在 `package.json` 中的 `scripts` 增加测试的执行命令
 - 执行测试命令
+
+## 持续集成
+
+**优点：**
+
+- 快速发现错误
+- 防止分支大幅偏离主干
+
+核心措施是，代码集成到主干之前，必须通过自动化测试，只要有一个用例测试失败，就不能集成。
+
+`Github` 流行 `CI`：
+
+- `Travis CI`
+- `Circle CI`
+- `Jenkins`
+- `APPVeyor`
+- `CodeShip`
+- `Drone`
+- `Semaphero CI`
+- `BuildKite`
+- `Wercker`
+- `TeamCity`
+
+**接入 `Travis CI`:**
+
+- https://travis-ci.org/ 使用 `Github` 账号登录
+- https://travis-ci.org/account/repositories 为项目开启
+- 项目跟目录下 `.travis.yml`
+
+**`.travis.yml` 文件内容**
+
+```yml
+language: node_js # 语言
+
+sudo: false # 权限
+
+cache: # 缓存
+  apt: true
+  diretories:
+    - node_modules
+
+node_js: stable #设置 node 版本
+
+install:
+  - npm install -D # 安装构建器依赖
+  - cd ./test/template-project
+  - npm install -D # 安装项目模板依赖
+  - ../../../
+
+script:
+  - npm test
+```
+
+## 发布到 npm
+
+添加用户：`npm adduser`
+
+升级版本号：
+
+- 升级补丁版本号：`npm version patch`
+- 升级小版本号：`npm version minor`
+- 升级补丁版本号：`npm version major`
+
+发布版本：`npm publish`
+
+## Git 规范和 ChangeLog 生成
+
+**良好的 `Git Commit` 优势：**
+
+- 加快 `Code Review` 流程
+- 根据 `Git Commit` 元数据生成 `ChangeLog`
+- 后续维护者可以知道 `Feature` 被修改的原因
+
+**技术方案：**
+
+- 统一团队使用的 `Git Commit` 日志标准，便于后续代码 `Review` 和发布
+- 使用 `angular` 的 `Git Commit` 日志作为基本规范
+  - 提交类型限制为：`feat`,`fix`,`docs`,`style`,`refactor`,`perf`,`test`,`chore`,`revert` 等
+  - 提交信息分为两部分：标题（首字母不大写，末尾不要标点）、主体内容（正常描述的信息即可）
+- 日志提交时友好的类型选择提示，使用 `commitize` 工具
+- 不符合要求格式的日志拒绝提交的保障机制
+  - 使用 `validate-commit-msg` 工具
+  - 同时在 `clent`、`gitlab` 和 `server hook` 实现
+- 统一 `ChangeLog` 文档信息生成，可以使用（`conventional-changelog`）
+
+**提交类型含义：**
+
+- `feat`: 新增 `feature`
+- `fix`: 修复 `bug`
+- `docs`: 仅仅修改了文档，比如 `README`、`CHANGELOG`、`CONTRIBUTE` 等等
+- `style`: 仅仅修改了空格、格式缩进，逗号等等，不改变源代码逻辑
+- `refactor`: 代码重构，没有增加新功能或者修复 `bug`
+- `perf`: 优化相关，比如提高性能、体验
+- `test`: 测试用例，包括单元测试、集成测试等
+- `chore`: 改变构建流程，或者增加依赖库、工具等
+- `revert`: 回滚到上一个版本
+
+**本地开发阶段增加 `precommit` 钩子：**
+
+```json
+{
+  "scripts": {
+    "commitmsg": "validate-commit-msg",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "devDependencise": {
+    "validate-commit-msg": "^2.11.1",
+    "conventional-changelog-cli": "^1.2.0",
+    "husky": "^0.13.1"
+  }
+}
+```
+
+## 语义化（Semantic Versioning）版本规范
+
+- 内部灰度测试：`x.x.x-alpha.x`
+- 外部小范围测试：`x.x.x-beta.x`
+- 公测：`x.x.x-rc.x`
+- 正式版：`x.x.x`
+
+- 主版本号：做不了兼容的 `API` 修改
+- 次版本号：做了向下兼容的 `API` 修改
+- 修订号：做了向下兼容的问题修正
+- 先行版本号：先行版本号可以作为发布正式版之前的版本
+  - `alpha`: 内部测试版，一般不向外发布，会存在 `bug` 只有测试人员使用
+  - `beta`: 也是测试版，这个阶段的版本会一直加入新的功能，在 `alpha` 版本之后发布
+  - `rc`(`Release-Candidate`): 在系统平台上就是发行的候选版本，不会再加入新功能，主要着重于除错
+
+**遵守 `semver` 规范的优势：**
+
+- 避免出现循环依赖
+- 依赖冲突减少
