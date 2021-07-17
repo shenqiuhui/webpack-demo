@@ -1,0 +1,1 @@
+(self.webpackChunk_29_optmize_size=self.webpackChunk_29_optmize_size||[]).push([[256],{4256:function(e,t,n){"use strict";n.r(t);var i=n(3804),u=n.n(i);t.default=function(){return u().createElement("div",null,"动态 import")}}}]);
