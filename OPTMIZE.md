@@ -28,3 +28,14 @@
 
 - 依赖第三方模块文件大小
 - 业务里面的组件代码大小
+
+# 使用高版本的 Webpack 和 NodeJS
+
+`Webpack 4` 比 `Webpack 3` 在构建速度上提升了 `60%` ~ `98%`
+
+**使用 `Webpack 4` 优化原因：**
+
+- `V8 6.0` 带来的优化（`for of` 代替 `forEach`、`Map` 和 `Set` 代替 `Object`、`includes` 代替 `indexOf`）
+- 默认使用更快的 `md4 hash` 替代 `md5 hash` 算法
+- `webpacks AST` 可以直接从 `loader` 传递给 `AST`，减少解析时间
+- 使用字符串方法代替正则表达式
