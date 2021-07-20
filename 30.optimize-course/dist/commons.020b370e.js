@@ -1,0 +1,1 @@
+(self.webpackChunk_30_optimize_course=self.webpackChunk_30_optimize_course||[]).push([[351],{4272:function(e,u,n){"use strict";function c(){return"Hello webpack"}n.d(u,{T:function(){return c}})}}]);

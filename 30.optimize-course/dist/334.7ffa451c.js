@@ -1,0 +1,1 @@
+(self.webpackChunk_30_optimize_course=self.webpackChunk_30_optimize_course||[]).push([[334],{334:function(e,t,u){"use strict";u.r(t);var n=u(3804),i=u.n(n);t.default=function(){return i().createElement("div",null,"动态 import")}}}]);

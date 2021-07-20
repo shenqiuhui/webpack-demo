@@ -39,3 +39,19 @@
 - 默认使用更快的 `md4 hash` 替代 `md5 hash` 算法
 - `webpacks AST` 可以直接从 `loader` 传递给 `AST`，减少解析时间
 - 使用字符串方法代替正则表达式
+
+# 多进程多实例的构建
+
+**可选方案：**
+
+- `thread-loader`（`Webacpk 4` 原生支持）
+- `parallel-webpack`
+- `happypack`（`Webpack 4` 被原生替换）
+
+**`HappyPack` 原理：**
+
+每次 `Webpack` 解析一个模块，`HappyPack` 会将它及它的依赖分配给 `worker` 线程中
+
+**多进程/多实例并行压缩：**
+
+
