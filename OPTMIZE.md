@@ -44,7 +44,7 @@
 
 **可选方案：**
 
-- `thread-loader`（`Webacpk 4` 原生支持）
+- `thread-loader`（`Webacpk 4` 默认使用）
 - `parallel-webpack`
 - `happypack`（`Webpack 4` 被原生替换）
 
@@ -54,4 +54,6 @@
 
 **多进程/多实例并行压缩：**
 
-
+- `parallel-uglify-plugin`
+- `uglifyjs-webpack-plugin`
+- `terser-webpack-plugin`（`Webpack 4` 默认使用，支持压缩 `ESNext` 语法）
