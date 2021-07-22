@@ -1,0 +1,1 @@
+(self.webpackChunk_32_optimize_cache=self.webpackChunk_32_optimize_cache||[]).push([[704],{5704:function(e,t,c){"use strict";c.r(t);var i=c(2013);t.default=function(){return i.createElement("div",null,"动态 import")}}}]);

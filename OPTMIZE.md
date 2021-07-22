@@ -73,5 +73,12 @@
 
 方法：使用 `DllPlugin` 进行分包，`DllReferencePlugin` 对 `manifest.json` 引用
 
+# 构建缓存
 
+目的：提升二次构建速度
 
+**缓存思路：**
+
+- `babel-loader`: 编译 `JS` 开启缓存
+- `terser-webpack-plugin`: 代码压缩阶段开启缓存
+- `cache-loader` 或者 `hard-source-webpack-plugin`: 开启模块转换阶段的缓存
