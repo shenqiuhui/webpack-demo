@@ -57,3 +57,21 @@
 - `parallel-uglify-plugin`
 - `uglifyjs-webpack-plugin`
 - `terser-webpack-plugin`（`Webpack 4` 默认使用，支持压缩 `ESNext` 语法）
+
+# 分包 DLL
+
+**分包的方式：**
+
+- `splitchunks`: `Webpack4` 默认支持的分包方式，将代码公共部分按照分包策略进行分析
+- `html-webpack-externals-plugin`: 分离依赖库，使用 `cdn` 的方式引入
+- `DllPlugin`: 预编译资源模块，对多个框架库进行提取，打包成一个 `bundle` 文件
+- `DllReferencePlugin`: 引用 `dll-plugin` 生成的 `manifest.json` 文件
+
+**`DLL` 分包：**
+
+思路：将 `react`、`react-dom`、`redux`、`react-redux` 基础包和业务基础包打成一个文件
+
+方法：使用 `DllPlugin` 进行分包，`DllReferencePlugin` 对 `manifest.json` 引用
+
+
+
