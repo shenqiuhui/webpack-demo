@@ -82,3 +82,14 @@
 - `babel-loader`: 编译 `JS` 开启缓存
 - `terser-webpack-plugin`: 代码压缩阶段开启缓存
 - `cache-loader` 或者 `hard-source-webpack-plugin`: 开启模块转换阶段的缓存
+
+# 缩小构建目标
+
+目的：尽可能的少构建模块
+
+比如 `babel-loader` 不解析 `node_modules`
+
+- 优化 `resolve.modules` 配置（减少模块搜索层级）
+- 优化 `resolve.mainFields` 配置（可以将 `package.json` 中的字段作为入口文件解析，如 `main` 字段，跳过默认查找的过程）
+- 优化 `resolve.extensions` 配置（模块文件名后缀查找规则）
+- 合理使用 `alias`（缩短公共库查找时间）
