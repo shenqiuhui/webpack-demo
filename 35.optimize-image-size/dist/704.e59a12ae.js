@@ -1,0 +1,1 @@
+(self.webpackChunk_35_optimize_image_size=self.webpackChunk_35_optimize_image_size||[]).push([[704],{5704:function(e,i,t){"use strict";t.r(i);var n=t(1439),u=t.n(n);i.default=function(){return u().createElement("div",null,"动态 import")}}}]);
