@@ -120,3 +120,28 @@
 `optipng`: 其设计灵感来自于 `pngcrush`，`optipng` 可将图像文件重新压缩为更小尺寸而不丢失任何信息
 
 `tinypng`: 也是将 `24` 位 `PNG` 文件转化更小有索引的 `8` 位图片，同时所有非必要的 `metadata` 也会被剥离掉
+
+# 动态 Polyfill
+
+| 方案 | 优点 | 缺点 | 是否采用 |
+| ---------- | ---------- | ---------- | ---------- |
+| `babel-polyfill` | `React 16` 官方推荐 | 包体积 `200k+`，难以抽离 `Map`、`Set`，项目中是单独引用的 `cdn`，如果要用它，单独构建一份放在 `React` 前加载 | 否 |
+| `babel-plugin-transform-runtime` | 能只 `polyfill` 到类或方法，相对体积较小 | 不能 `polyfill` 原型上的方法，不适用于业务项目环境复杂的开发 | 否 |
+| 自己编写 `Map`、`Set` 的 `polyfill` | 定制化高，体积小 | 重复造轮子，容易日后年久失修称为坑，即使体积小依然要所有用户加载 | 否 |
+| `polyfill-service` | 只给用户返回需要的 `polyfill`，社区维护 | 部分国内浏览器 `UA` 无法识别 | 是 |
+
+`polyfill-service`: https://polyfill.io/v3/polyfill.min.js
+
+```html
+<script src="https://polyfill.io/v3/polyfill.min.js"></script>
+```
+
+# 总结
+
+**体积优化策略**
+
+- `Scope hoisting`
+- `Tree shaking`
+- 公共资源分离
+- 图片压缩
+- 动态 `Polyfill`
