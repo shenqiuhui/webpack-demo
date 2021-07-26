@@ -93,3 +93,10 @@
 - 优化 `resolve.mainFields` 配置（可以将 `package.json` 中的字段作为入口文件解析，如 `main` 字段，跳过默认查找的过程）
 - 优化 `resolve.extensions` 配置（模块文件名后缀查找规则）
 - 合理使用 `alias`（缩短公共库查找时间）
+
+# Tree shaking 删除无用 CSS
+
+- `PurifyCSS`: 遍历代码，识别已经用到的 `CSS class`
+- `uncss`: `HTML` 需要通过 `jsdom` 加载，所有的样式通过 `PostCSS` 解析，通过 `document.querySelector` 来识别在 `HTML` 文件中不存在的选择器
+
+使用 `purgecss-webpack-plugin` 配合 `mini-css-extract-plugin`

@@ -1,0 +1,9 @@
+.search-text {
+  font-size: 20px;
+  color: aqua;
+  transform: translate(50%, 50%);
+}
+
+.unused {
+  text-align: center;
+}
