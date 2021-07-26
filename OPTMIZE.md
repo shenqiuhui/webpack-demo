@@ -100,3 +100,23 @@
 - `uncss`: `HTML` 需要通过 `jsdom` 加载，所有的样式通过 `PostCSS` 解析，通过 `document.querySelector` 来识别在 `HTML` 文件中不存在的选择器
 
 使用 `purgecss-webpack-plugin` 配合 `mini-css-extract-plugin`
+
+# 图片体积压缩优化
+
+要求：基于 `Node` 库的 `imagemin` 或者 `tinypng API`
+
+使用：配置 `image-webpack-loader`（基于 `imagemin` 实现）
+
+**`imagemin` 优点：**
+
+- 有很多定制选项
+- 可以引入更多第三方优化插件，如 `pngquant`
+- 可以处理多种图片格式
+
+`pngquant`: 是一款 `PNG` 压缩器，通过将图片转换为具有 `alpha` 通道（通常比 `24/32` 位 `PNG` 文件小 `60% ~ 80%`）的更高效的 `8` 位 `PNG` 格式，可以显著减小文件大小
+
+`pngcrush`: 其主要目的是通过尝试不同的压缩级别和 `PNG` 过滤方法来降低 `PNG IDAT` 数据流的大小
+
+`optipng`: 其设计灵感来自于 `pngcrush`，`optipng` 可将图像文件重新压缩为更小尺寸而不丢失任何信息
+
+`tinypng`: 也是将 `24` 位 `PNG` 文件转化更小有索引的 `8` 位图片，同时所有非必要的 `metadata` 也会被剥离掉
