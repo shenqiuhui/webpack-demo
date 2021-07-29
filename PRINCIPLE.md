@@ -89,3 +89,66 @@ const NON_COMPILATION_ARGS = [
 
 - `webpack-cli` 对配置文件和命令行参数进行转换，最终生成配置选项参数 `options`
 - 最终会根据配置参数实例化 `webpack` 对象，然后执行构建流程
+
+# Webpack 的本质
+
+可以将 `Webpack` 理解是一种基于事件流的编程范例，一些列的插件运行。
+
+## Tapable 是什么
+
+`Tapable` 是一个类似于 `Node.js` 的 `EventEmitter` 的库，主要是控制钩子函数的发布与订阅，控制着 `Webpack` 的插件系统。
+
+### Table 钩子
+
+**`Tapable` 库暴露了很多钩子类，为插件提供挂载的钩子**
+
+- `SyncHook`: 同步钩子
+- `SyncBailHook`: 同步熔断钩子
+- `SyncWaterfallHook`: 同步流水钩子
+- `SyncLoopHook`: 同步循环钩子
+- `AsyncParallelHook`: 异步并发钩子
+- `AsyncParallelBailHook`: 异步并发熔断钩子
+- `AsyncSeriesHook`: 异步串行钩子
+- `AsyncSeriesBailHook`: 异步串行熔断钩子
+- `AsyncSeriesWaterfallHook`: 异步串行流水钩子
+
+**`Tapable` 钩子关键词：**
+
+| type | funciton |
+| ------ | ------ |
+| `Hook` | 所有钩子的后缀 |
+| `Waterfall` | 同步方法，但是它会传值给下一个函数 |
+| `Bail` | 熔断：当函数有任何值返回，就会在当前执行函数停止 |
+| `Loop` | 监听函数返回 `true` 表示继续循环，返回 `undefined` 表示结束循环 |
+| `Sync` | 同步方法 |
+| `AsyncSeries` | 异步串行钩子 |
+| `AsyncParallel` | 异步并行钩子 |
+
+### Tapable 的使用
+
+**`new Hook` 新建钩子：**
+
+`Tapable` 暴露出来的都是类方法，`new` 一个类方法获得我们需要的钩子，`class` 接收数组参数 `options`，非必传，类方法会根据传参接受同样数量的参数。
+
+```js
+const hook = new SyncHook(['arg1', 'arg2', 'arg3']);
+```
+
+**钩子的绑定与执行：**
+
+`Tapable` 提供了同步&异步绑定钩子的方法，并且他们都有绑定事件和执行事件对应的方法
+
+| Async* | Sync* |
+| ------ | ------ |
+| 绑定：`tapAsync/tapPromise/tap` | 绑定：`tap` |
+| 执行：`callAsync/promise` | 执行：`call` |
+
+```js
+const hook = new SyncHook(['arg1', 'arg2', 'arg3']);
+
+// 绑定事件到 webpack 事件流
+hook.tap('hookname', (arg1, arg2, arg3) => console.log(arg1, arg2, arg3)); // 1 2 3
+
+// 执行绑定的事件
+hook.call(1, 2, 3);
+```
