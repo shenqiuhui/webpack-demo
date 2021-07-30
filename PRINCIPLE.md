@@ -152,3 +152,182 @@ hook.tap('hookname', (arg1, arg2, arg3) => console.log(arg1, arg2, arg3)); // 1 
 // 执行绑定的事件
 hook.call(1, 2, 3);
 ```
+
+### Tapable 与 Webpack 是如何关联起来的
+
+**模拟 `Compiler.js`**
+
+```js
+module.exports = class Compiler {
+  constructor() {
+    this.hooks = {
+      accelerate: new SyncHook(['newspeed']),
+      brake: new SyncHook(),
+      calculateRoutes: new AsyncSeriesHook(['source', 'target', 'routesList'])
+    }
+  }
+  run() {
+    this.accelerate(10);
+    this.break();
+    this.calculateRoutes('Async', 'hook', 'demo');
+  }
+  accelerate(speed) {
+    this.hooks.accelerate.call(speed);
+  }
+  break() {
+    this.hooks.brake.call();
+  }
+  calculateRoutes() {
+    this.hooks.calculateRoutes.promise(...arguments).then(() => {
+    }, (err) => {
+      console.error(err);
+    });
+  }
+}
+```
+
+**模拟插件**
+
+```js
+const Compiler = require('./Compiler');
+
+class MyPlugin {
+  apply(compiler) {
+    compiler.hooks.brake.tap('WarningLampPlugin', () => {
+      console.log('WarningLampPlugin');
+    });
+    compiler.hooks.accelerate.tap('LoggerPlugin', (newSpeed) => {
+      console.log(`Accelerating to ${newSpeed}`);
+    });
+    compiler.hooks.calculateRoutes.tapPromise('calculateRoutes tapPromise', (source, target, routesList) => {
+      return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+          console.log(`tapPromise to ${source} ${target} ${routesList}`);
+          resolve();
+        }, 1000);
+      });
+    });
+  }
+}
+```
+
+**模拟插件执行**
+
+```js
+const myPlugin = new MyPlugin();
+
+const options = {
+  plugins: [
+    myPlugin,
+  ]
+};
+
+const compiler = new Compiler();
+
+for (const plugin of options.plugins) {
+  if (plugin && typeof plugin === 'function') {
+    plugin.call(compiler, compiler);
+  } else {
+    plugin.apply(compiler);
+  }
+}
+
+compiler.run();
+```
+
+# Webpack 流程
+
+`entry-option`: 初始化 `option`
+  => `run`: 开始编译
+  => `make`: 从 `entry` 开始递归的分析依赖，对每个依赖进行 `build`
+  => `before-resolve`: 对模块位置进行解析
+  => `build-module`: 开始构建模块
+  => `normal-module-loader`: 将 `loader` 加载完成的 `module` 进行编译，生成 `AST` 树
+  => `program`: 遍历 `AST`，当遇到 `require` 等一些调用表达式时，收集依赖
+  => `seal`: 所有依赖 `build` 完成，开始优化
+  => `emit`: 输出到 `dist` 目录
+
+## 准备阶段
+
+`WebpackOptionsApply` 作用：将所有的配置 `options` 参数转换成 `Webpack` 内部插件挂载到 `Compiler` 的实例上
+
+**使用默认插件列表：**
+
+- `output.library` => `LibraryTemplatePlugin`
+- `externals` => `ExternalsPlugin`
+- `devtool` => `EvalDevtoolModulePlugin`, `SourceMapDevtoolPlugin`
+- `AMDPlugin, CommonJsPlugin`
+- `RemoveEmptyChunksPlugin`
+
+**`Compiler hooks`**
+
+- 流程相关：
+  - (`before-`)`run`
+  - (`before-/after-`)`compile`
+  - `make`
+  - (`after-`)`emit`
+  - `done`
+- 监听相关：
+  - `watch-run`
+  - `watch-close`
+
+**`Compilation`**
+
+`Compiler` 调用 `Compilation` 生命周期方法
+
+- `addEntry` => `addModuleChain`
+- `finish`: 上报模块错误
+- `seal`: 构建完成文件生成和优化阶段
+
+## 模块构建和 chunk 生成
+
+### ModuleFactory
+
+- `NormalModuleFactory`: 普通模块，直接通过模块名引入的模块
+- `ContextModuleFactory`: 带路径引入的模块
+
+### Module
+
+- `NormalModule`: 普通模块
+- `ContextModule`: 带路径引入的模块
+- `ExternalModule`: `module.exports = jQuery` 类似的模块
+- `DelegatedModule`: `manifest` 引入的模块
+- `MutilModule`: `entry` 引入的模块
+
+**`Build`**
+
+- 使用 `loader-runner` 运行 `loaders`
+- 通过 `Parser` 解析（内部 `acron`）
+- `ParserPlugins` 添加依赖
+
+**`Compiler hooks`**
+
+- 模块相关：
+  - `build-module`
+  - `failed-module`
+  - `succeed-module`
+- 资源生成相关：
+  - `module-asset`
+  - `chunk-asset`
+- 优化和 `seal` 相关：
+  - (`after-`)`seal`
+  - `optimize`
+  - `optimize-modules`(`-basic/advanced`)
+  - `after-optimize-modules`
+  - `after-optimize-chunks`
+  - `after-optimize-tree`
+  - `optimize-chunk-modules`(`-basic/advanced`)
+  - `after-optimize-chunk-modules`
+  - `optimize-module/chunk-order`
+  - `before-module/chunk-ids`
+  - (`after-`)`optimize-module/chunk-ids`
+  - (`before/after-`)`hash`
+
+### chunk 生成算法
+
+- `Webpack` 先将 `entry` 中对应的 `module` 都生成一个新的 `chunk`
+- 遍历 `module` 的依赖列表，将依赖的 `module` 也加入到 `chunk` 中
+- 如果一个依赖 `module` 是动态引入的模块，那么就会根据这个 `module` 创建一个新的 `chunk`，继续遍历依赖
+- 重复上面过程知道得到所有 `chunk`
+
+## 文件生成

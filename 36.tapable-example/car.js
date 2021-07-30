@@ -19,11 +19,11 @@ myCar.hooks.brake.tap('WarningLampPlugin', () => {
 
 // 绑定同步钩子并传参
 myCar.hooks.accelerate.tap('LoggerPlugin', (newSpeed) => {
-  console.log(`Accelerating to ${newSpeed}`)
+  console.log(`Accelerating to ${newSpeed}`);
 });
 
 //绑定一个异步 Promise 钩子
-myCar.hooks.calculateRoutes.tapPromise('calculateRoutes tapPromise', (source, target, routesList, callback) => {
+myCar.hooks.calculateRoutes.tapPromise('calculateRoutes tapPromise', (source, target, routesList) => {
   return new Promise((resolve, reject)=>{
     setTimeout(()=>{
       console.log(`tapPromise to ${source} ${target} ${routesList}`);
