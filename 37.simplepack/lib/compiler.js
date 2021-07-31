@@ -38,7 +38,7 @@ module.exports = class Compiler {
     return {
       filename,
       dependencies: getDependencies(ast),
-      source: transform(ast)
+      transformCode: transform(ast)
     };
   }
   emitFiles() {
@@ -47,7 +47,7 @@ module.exports = class Compiler {
     let modules = '';
 
     this.modules.map((_module) => {
-      modules += `'${_module.filename}': function (require, module, exports) { ${_module.source} },`;
+      modules += `'${_module.filename}': function (require, module, exports) { ${_module.transformCode} },`;
     });
 
     const bundle = `(function (modules) {
