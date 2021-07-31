@@ -1,3 +1,6 @@
+import { china } from './country.js';
+
+
 export function greeting(name) {
-  return 'hello ' + name;
+  return `Hello ${name}, I'm from ${china()}!`;
 }

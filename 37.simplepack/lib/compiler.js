@@ -13,11 +13,15 @@ module.exports = class Compiler {
     const entryModule = this.buildModule(this.entry, true);
 
     this.modules.push(entryModule);
-    this.modules.map((_module) => {
-      _module.dependencies.map((_dependency) => {
+
+    for (let i = 0; i < this.modules.length; i++) {
+      const _module = this.modules[i];
+
+      for (let j = 0; j < _module.dependencies.length; j++) {
+        const _dependency = _module.dependencies[j];
         this.modules.push(this.buildModule(_dependency));
-      });
-    });
+      }
+    }
 
     this.emitFiles();
   }
@@ -57,7 +61,7 @@ module.exports = class Compiler {
       }
 
       require('${this.entry}');
-    })({${modules}})`;
+    })({${modules}});`;
 
     fs.mkdirSync(this.output.path);
     fs.writeFileSync(outputPath, bundle, 'utf-8');

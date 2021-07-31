@@ -13,12 +13,23 @@
 
 var _greeting = require("./greeting.js");
 
-document.write((0, _greeting.greeting)('Jane')); },'./greeting.js': function (require, module, exports) { "use strict";
+document.write((0, _greeting.greeting)('Shen')); },'./greeting.js': function (require, module, exports) { "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.greeting = greeting;
+
+var _country = require("./country.js");
+
 function greeting(name) {
-  return 'hello ' + name;
-} },})
+  return "Hello " + name + ", I'm from " + (0, _country.china)() + "!";
+} },'./country.js': function (require, module, exports) { "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.china = china;
+function china() {
+  return 'China';
+} },});
