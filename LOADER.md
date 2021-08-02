@@ -107,3 +107,22 @@ module.exports = function (input) {
 `Webpack` 中默认开启缓存，可以使用 `this.cacheable(false)` 关闭缓存
 
 缓存条件：`loader` 的结果在相同的输入下有确定的输出（有依赖的 `loader` 无法使用缓存）
+
+# loader 的文件输出
+
+通过 `this.emitFile` 进行文件写入
+
+```js
+const loaderUtils = require('loader-utils');
+
+module.exports = function (content) {
+  const url = loaderUtils.interpolateName(this, '[hash].[ext]', {
+    content
+  });
+
+  this.emitFile(url, content);
+
+  const path = `__webpack_public_path__ + ${JSON.stringify(url)};`;
+  return `export default ${path}`;
+}
+```
