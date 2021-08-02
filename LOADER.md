@@ -42,3 +42,24 @@ module.exports = {
 ```js
 const compose = (f, g) => (...args) => f(g(...args));
 ```
+
+# loader-runner 介绍
+
+`loader-runner` 允许在不安装 `Webpack` 的情况下执行 `loaders`，作用：
+
+- 作为 `Webpack` 的依赖，在 `Webpack` 源码中使用 `loader-runner` 执行 `loaders`
+- 进行 `loader` 的开发和调试
+
+```js
+import { runLoaders } from 'loader-runner';
+
+runLoaders({
+  resource: '/abs/path/to/file.txt?query', // 解析静态资源的路径（绝对路径）
+  loaders: ['/abs/path/to/loader.js?query'], // 多个 loaders（绝对路径）
+  context: { minimize: true }, // 提供基础上下文以外的其他 loader 上下文
+  readResource: fs.readFile.bind(fs) // 查询 resource 的方式（函数）
+}, function (err, result) {
+  // err 错误信息
+  // result 执行后的结果
+});
+```
