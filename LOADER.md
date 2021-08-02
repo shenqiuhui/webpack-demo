@@ -126,3 +126,25 @@ module.exports = function (content) {
   return `export default ${path}`;
 }
 ```
+
+# 自动合成雪碧图 loader
+
+## 支持语法
+
+`background: url('a.png?__sprite');` + `background: url('b.png?__sprite');` => `background: url('sprite.png');`
+
+## 准备知识
+
+如何将两张图片合成一张图片？
+
+使用 [spritesmith](https://www.npmjs.com/package/spritesmith)
+
+```js
+const sprits = ['./images/1.jpg', './images/2.jpg'];
+
+Spritesmith.run({ src: sprites }, function handleRresult(err, result) {
+  result.image;
+  result.coordinates,
+  result.properties
+});
+```

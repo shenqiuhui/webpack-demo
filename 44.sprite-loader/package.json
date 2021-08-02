@@ -1,0 +1,16 @@
+{
+  "name": "44.sprite-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run-loader": "node ./run-loader.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "loader-runner": "^4.2.0",
+    "spritesmith": "^3.4.0"
+  }
+}
