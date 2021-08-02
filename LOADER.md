@@ -63,3 +63,41 @@ runLoaders({
   // result 执行后的结果
 });
 ```
+
+# loader 的参数获取
+
+通过 `loader-utils` 的 `getOptions` 方法获取
+
+```js
+const loaderUtils = require('loader-utils');
+
+module.exports = function (content) {
+  const { name } = loaderUtils.getOptions(this);
+}
+```
+
+# loader 异常处理
+
+- `loader` 内直接通过 `throw` 抛出（同步）
+- 通过 `this.callback` 传递错误（同步）
+
+```ts
+this.callback(
+  err: Error | null,
+  content: string | Buffer,
+  sourceMap?: SourceMap,
+  meta?: any
+);
+```
+
+# loader 的异步处理
+
+通过 `this.async` 来返回一个异步函数，第一个参数是 `error`，第二个参数是处理结果
+
+```js
+module.exports = function (input) {
+  const callback = this.async();
+
+  callback(null, input);
+}
+```

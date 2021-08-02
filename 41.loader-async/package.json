@@ -1,0 +1,16 @@
+{
+  "name": "41.loader-async",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run-loader": "node ./run-loader.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "loader-runner": "^4.2.0",
+    "loader-utils": "^2.0.0"
+  }
+}
