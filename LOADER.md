@@ -101,3 +101,9 @@ module.exports = function (input) {
   callback(null, input);
 }
 ```
+
+# 在 loader 中使用缓存
+
+`Webpack` 中默认开启缓存，可以使用 `this.cacheable(false)` 关闭缓存
+
+缓存条件：`loader` 的结果在相同的输入下有确定的输出（有依赖的 `loader` 无法使用缓存）
