@@ -1,1 +1,1 @@
-console.log('Hello loaders!');
+console.log('Hello plugins!');
